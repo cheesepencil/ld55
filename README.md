@@ -2,6 +2,8 @@
 
 ### Sick of Summoning
 
+Play the post-jam version [here](https://cheesepencil.github.io/ld55/).
+
 You're a wizard, gamer! But your summoning spell has gone completely off the rails and now you can't seem to stop the demons from entering your realm. Use your magic missiles to beat them back and go for the high score!
 
 ### How To Play
