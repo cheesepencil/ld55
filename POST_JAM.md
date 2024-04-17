@@ -1,4 +1,7 @@
 # Post-Jam To-Do
+* increase monster spawn rate as score increases
+* bullet power ups
+* new monster
 * Title scene
 * Long press to restart level
 * Ladders
