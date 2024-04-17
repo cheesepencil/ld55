@@ -1,7 +1,6 @@
 # Post-Jam To-Do
 * Title scene
 * Long press to restart level
-* Persist high score
 * Ladders
 * Better backgrounds
 * Animate wizard
@@ -10,3 +9,4 @@
 * Refactor fireballs
 * Refactor monsters
 * refactor bullets
+* Persist high score
