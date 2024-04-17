@@ -45,20 +45,6 @@ function _monster_update(monster, scene)
         end
     end
 
-    if scene.player and scene.player.bullet and not scene.player.bullet.killed then
-        for by = scene.player.bullet.y, scene.player.bullet.y + 5 do
-            if scene.player.bullet.x >= monster.x 
-            and scene.player.bullet.x <= monster.x + 7
-            and by >= monster.y
-            and by <= monster.y + 7 then
-                scene.score += 1
-                scene.player.bullet.killed = true
-                sfx(4)
-                return false
-            end
-        end
-    end
-
     return true
 end
 
@@ -90,11 +76,37 @@ function make_monster()
     return monster
 end
 
-function easeinelastic(t)
-	if(t==0) return 0
-	return 2^(10*t-10)*cos(2*t-2)
+function _update_monster_mgr(mm)
+    if mm.scene.player and t() > mm.spawn_after_t then
+        mm.spawn_after_t = t() + 1
+        add(mm.monsters, make_monster())
+    end
+
+    local dead_monsters = {}
+    for monster in all(mm.monsters) do
+        local monster_is_alive = monster:update()
+        if not monster_is_alive then
+            add(dead_monsters, monster)
+        end
+    end
+    for dead_monster in all(dead_monsters) do
+        del(mm.monsters, dead_monster)
+    end
 end
 
-function lerp(a,b,t)
-	return a+(b-a)*t
+function _draw_monster_mgr(mm)
+    for monster in all(mm.monsters) do monster:draw() end
+end
+
+function make_monster_mgr(scene)
+    local monster_mgr = {}
+
+    monster_mgr.monsters = {}
+    monster_mgr.spawn_after_t = t()
+
+    monster_mgr.scene = scene
+    monster_mgr.update = _update_monster_mgr
+    monster_mgr.draw = _draw_monster_mgr
+
+    return monster_mgr
 end

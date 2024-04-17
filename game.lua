@@ -5,9 +5,8 @@ function _game_scene_init(scene)
     scene.score = 0
 
     scene.player = make_player(scene)
-    scene.monsters = {}
-    scene.fireball_mgr = _make_fireball_mgr(scene)
-    add(scene.monsters, make_monster())
+    scene.monster_mgr = make_monster_mgr(scene)
+    scene.fireball_mgr = make_fireball_mgr(scene)
 end
 
 function _game_scene_update(scene, inputs, restart)
@@ -17,32 +16,17 @@ function _game_scene_update(scene, inputs, restart)
         restart()
     end
 
-    if t() % 1 == 0 and scene.player and flr(rnd(2)) > 0 then
-        add(scene.monsters, make_monster())
-    end
-
-    local dead_monsters = {}
-    for monster in all(scene.monsters) do
-        local monster_is_alive = monster:update(scene)
-        if not monster_is_alive then
-            add(dead_monsters, monster)
-        elseif (scene.player) then
-            if _collide_8x8(monster, scene.player) then 
-                sfx(2)
-                scene.player = nil
-            end
-        end
-    end
-    for dead_monster in all(dead_monsters) do
-        del(scene.monsters, dead_monster)
-        if scene.player then add(scene.monsters, make_monster()) end
-    end
-
     scene.fireball_mgr:update()
+    scene.monster_mgr:update()
 
     -- collisions!
     for fireball in all(scene.fireball_mgr.fireballs) do
-        if scene.player and _collide_8x8(scene.player, fireball) then
+        if scene.player and collide_8x8(scene.player, fireball) then
+            scene.player:kill()
+        end
+    end
+    for monster in all(scene.monster_mgr.monsters) do
+        if scene.player and collide_8x8(monster, scene.player) then 
             scene.player:kill()
         end
     end
@@ -57,11 +41,8 @@ function _game_scene_draw(scene)
     end
     
     if scene.player then scene.player:draw() end
-    
-    for monster in all(scene.monsters) do
-        monster:draw()
-    end
 
+    scene.monster_mgr:draw()
     scene.fireball_mgr:draw()
 
     print("score: " .. scene.score, 1, 1, 2)

@@ -54,7 +54,7 @@ function _fireball_mgr_draw(fbm)
     end
 end
 
-function _make_fireball_mgr(scene)
+function make_fireball_mgr(scene)
     local fireball_mgr = {}
 
     fireball_mgr.fireballs = {}

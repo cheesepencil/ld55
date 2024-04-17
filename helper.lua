@@ -1,4 +1,4 @@
-function _collide_8x8(a, b)
+function collide_8x8(a, b)
     local aLeft = a.x
     local aTop = a.y
     local aRigth = a.x + 8
@@ -15,4 +15,13 @@ function _collide_8x8(a, b)
     if (bLeft > aRigth)  return false 
 
     return true
+end
+
+function easeinelastic(t)
+	if(t==0) return 0
+	return 2^(10*t-10)*cos(2*t-2)
+end
+
+function lerp(a,b,t)
+	return a+(b-a)*t
 end
