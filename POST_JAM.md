@@ -8,3 +8,5 @@
 
 # Post-Jam Done
 * Refactor fireballs
+* Refactor monsters
+* refactor bullets

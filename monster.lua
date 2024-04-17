@@ -6,7 +6,7 @@ MONSTER_CLIMB_DURATION = 0.75
 MONSTER_FRAME_1 = 1
 MONSTER_FRAME_2 = 17
 
-function _monster_update(monster, scene)
+function _monster_update(monster)
     if monster.summoning then
         if (t() > monster.spawn_completes_at) then 
             monster.summoning = false
@@ -98,6 +98,10 @@ function _draw_monster_mgr(mm)
     for monster in all(mm.monsters) do monster:draw() end
 end
 
+function _kill_monster_mgr(mm, monster)
+    del(mm.monsters, monster)
+end
+
 function make_monster_mgr(scene)
     local monster_mgr = {}
 
@@ -107,6 +111,7 @@ function make_monster_mgr(scene)
     monster_mgr.scene = scene
     monster_mgr.update = _update_monster_mgr
     monster_mgr.draw = _draw_monster_mgr
+    monster_mgr.kill = _kill_monster_mgr
 
     return monster_mgr
 end

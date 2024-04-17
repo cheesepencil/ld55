@@ -8,10 +8,9 @@ end
 
 function _player_draw(player)
     spr(0, player.x, PLAYER_HEIGHT, 1, 1, player.flip)
-    if player.bullet then player.bullet:draw() end
 end
 
-function _player_update(player, inputs)
+function _player_update(player)
     if inputs.left == true then
         player.flip = true
         player.x -= PLAYER_SPEED
@@ -21,11 +20,6 @@ function _player_update(player, inputs)
     end
     if player.x > 127 - 7 then player.x = 127 - 7 end
     if player.x < 0 then player.x = 0 end
-    if inputs.btn_x and not player.bullet then
-        sfx(5)
-        player.bullet = make_bullet(player.flip and player.x or player.x + 7)
-    end
-    if player.bullet then player.bullet = player.bullet:update() end
 end
 
 function make_player(scene)

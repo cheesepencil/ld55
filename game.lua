@@ -5,6 +5,7 @@ function _game_scene_init(scene)
     scene.score = 0
 
     scene.player = make_player(scene)
+    scene.bullet_mgr = make_bullet_mgr(scene)
     scene.monster_mgr = make_monster_mgr(scene)
     scene.fireball_mgr = make_fireball_mgr(scene)
 end
@@ -18,6 +19,7 @@ function _game_scene_update(scene, inputs, restart)
 
     scene.fireball_mgr:update()
     scene.monster_mgr:update()
+    scene.bullet_mgr:update(inputs)
 
     -- collisions!
     for fireball in all(scene.fireball_mgr.fireballs) do
@@ -28,6 +30,22 @@ function _game_scene_update(scene, inputs, restart)
     for monster in all(scene.monster_mgr.monsters) do
         if scene.player and collide_8x8(monster, scene.player) then 
             scene.player:kill()
+        end
+    end
+    for bullet in all(scene.bullet_mgr.bullets) do
+        if not bullet.dead then
+            local dead_monster = nil
+            for monster in all(scene.monster_mgr.monsters) do
+                if not dead_monster and collide_line_sprite(bullet, monster) then
+                    scene.score += 1
+                    dead_monster = monster
+                    add(scene.monster_mgr.monsters, make_monster())
+                end
+            end
+            if dead_monster then 
+                scene.monster_mgr:kill(dead_monster)
+                bullet.dead = true
+            end
         end
     end
 end
@@ -44,6 +62,7 @@ function _game_scene_draw(scene)
 
     scene.monster_mgr:draw()
     scene.fireball_mgr:draw()
+    scene.bullet_mgr:draw()
 
     print("score: " .. scene.score, 1, 1, 2)
 end
