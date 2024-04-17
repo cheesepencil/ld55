@@ -1,6 +1,11 @@
 PLAYER_SPEED = 1
 PLAYER_HEIGHT = 16-4
 
+function _player_kill(player)
+    sfx(2)
+    player.scene.player = nil
+end
+
 function _player_draw(player)
     spr(0, player.x, PLAYER_HEIGHT, 1, 1, player.flip)
     if player.bullet then player.bullet:draw() end
@@ -23,15 +28,17 @@ function _player_update(player, inputs)
     if player.bullet then player.bullet = player.bullet:update() end
 end
 
-function make_player()
+function make_player(scene)
     local player = {}
 
+    player.scene = scene
     player.flip = false
     player.x = 64 - 8
     player.y = PLAYER_HEIGHT
 
     player.update = _player_update
     player.draw = _player_draw
+    player.kill = _player_kill
 
     return player
 end
