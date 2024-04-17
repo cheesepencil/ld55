@@ -2,6 +2,7 @@ PLAYER_SPEED = 1
 PLAYER_HEIGHT = 16-4
 
 function _player_kill(player)
+    if player.scene.score > dget(0) then dset(0, player.scene.score) end
     sfx(2)
     player.scene.player = nil
 end

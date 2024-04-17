@@ -5,6 +5,7 @@ function change_scene(new_scene)
 end
 
 function _init()
+    cartdata("cp_ld55_0")
     scene = make_game_scene()
 end
 

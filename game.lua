@@ -37,9 +37,9 @@ function _game_scene_update(scene, inputs, restart)
             local dead_monster = nil
             for monster in all(scene.monster_mgr.monsters) do
                 if not dead_monster and collide_line_sprite(bullet, monster) then
-                    scene.score += 1
+                    if scene.player then scene.score += 1 end
                     dead_monster = monster
-                    add(scene.monster_mgr.monsters, make_monster())
+                    -- add(scene.monster_mgr.monsters, make_monster())
                 end
             end
             if dead_monster then 
@@ -64,7 +64,8 @@ function _game_scene_draw(scene)
     scene.fireball_mgr:draw()
     scene.bullet_mgr:draw()
 
-    print("score: " .. scene.score, 1, 1, 2)
+    print("HI SCORE: " .. dget(0), 64, 1, 7)
+    print("SCORE: " .. scene.score, 1, 1, 7)
 end
 
 function make_game_scene()
