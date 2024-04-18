@@ -1,7 +1,7 @@
 BULLET_COLOR = 7
 BULLET_SPEED = 3
-BULLET_MAX_COUNT = 3
-BULLET_COOLDOWN = 0.25
+BULLET_MAX_COUNT = 1
+BULLET_COOLDOWN = 0.125
 
 function _bullet_update(bullet)
     bullet.y += BULLET_SPEED

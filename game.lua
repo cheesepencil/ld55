@@ -1,6 +1,3 @@
-GAME_FLOOR_COLOR = 2
-GAME_WALL_COLOR = 5
-
 function _game_scene_init(scene)
     scene.score = 0
 
@@ -52,10 +49,16 @@ end
 
 function _game_scene_draw(scene)
     rectfill(0, 0, 127, 127, 0)
-    line(0,20,0,127, GAME_WALL_COLOR)
-    line(127,20,127,127, GAME_WALL_COLOR)
+    rectfill(0, 0, 127, 20, 12)
+    
     for i=20, 128, 16 do
-        line(0, i, 127, i, GAME_FLOOR_COLOR)
+        for j=0, 15 do
+            if i == 20 then
+                spr(14, j * 8, i)
+            else
+                spr(15, j * 8, i)
+            end
+        end
     end
     
     if scene.player then scene.player:draw() end
@@ -64,8 +67,8 @@ function _game_scene_draw(scene)
     scene.fireball_mgr:draw()
     scene.bullet_mgr:draw()
 
-    print("HI SCORE: " .. dget(0), 64, 1, 7)
-    print("SCORE: " .. scene.score, 1, 1, 7)
+    print("best: " .. dget(0), 64, 1, 7)
+    print("score: " .. scene.score, 1, 1, 7)
 end
 
 function make_game_scene()

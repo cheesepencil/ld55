@@ -6,6 +6,11 @@ MONSTER_CLIMB_DURATION = 0.75
 MONSTER_FRAME_1 = 1
 MONSTER_FRAME_2 = 17
 
+MONSTER_MAX_MONSTERS = 200
+MONSTER_MIN_SUMMON_CD = 0.25
+MONSTER_MAX_SUMMON_CD = 1.5
+MONSTER_MAX_SUMMON_CD_SCORE = 250
+
 function _monster_update(monster)
     if monster.summoning then
         if (t() > monster.spawn_completes_at) then 
@@ -49,6 +54,10 @@ function _monster_update(monster)
 end
 
 function _monster_draw(monster)
+    if monster.summoning then
+        ovalfill(monster.x, 123, monster.x + 8, 127, 2)
+        oval(monster.x, 123, monster.x + 8, 127, 8)
+    end
     spr(monster.frame, monster.x, monster.y, 1, 1, monster.flip)
 end
 
@@ -77,8 +86,10 @@ function make_monster()
 end
 
 function _update_monster_mgr(mm)
-    if mm.scene.player and t() > mm.spawn_after_t then
-        mm.spawn_after_t = t() + 1
+    if mm.scene.player and t() > mm.spawn_after_t and #mm.monsters < MONSTER_MAX_MONSTERS then
+        local delay = MONSTER_MIN_SUMMON_CD 
+            + ((MONSTER_MAX_SUMMON_CD - MONSTER_MIN_SUMMON_CD) * (max(1 - (mm.scene.score/MONSTER_MAX_SUMMON_CD_SCORE), 0)))
+        mm.spawn_after_t = t() + delay
         add(mm.monsters, make_monster())
     end
 
