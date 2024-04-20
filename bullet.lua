@@ -17,12 +17,12 @@ function _bullet_draw(bullet)
     line(bullet.x, bullet.y, bullet.x, bullet.y +5, BULLET_COLOR)
 end
 
-function make_bullet(x)
+function make_bullet(x, y)
     local bullet = {}
 
     bullet.dead = false
     bullet.x = x
-    bullet.y = 20 - 7
+    bullet.y = y
 
     bullet.update = _bullet_update
     bullet.draw = _bullet_draw
@@ -40,8 +40,9 @@ function _bullet_mgr_update(bm, inputs)
         bm.shoot_after_t = t() + BULLET_COOLDOWN
         local bullet = make_bullet(
             bm.scene.player.flip 
-            and bm.scene.player.x 
-            or bm.scene.player.x + 7
+                and bm.scene.player.x 
+                or bm.scene.player.x + 7,
+            bm.scene.player.y -2
         )
         add(bm.bullets, bullet)
     end

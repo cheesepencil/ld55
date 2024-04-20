@@ -31,12 +31,16 @@ function _monster_update(monster)
 
         monster.x += monster.flip and -monster.speed or monster.speed
         if monster.x > 127 - 8 then
-            if monster.y > 20 then monster.jumping = true else return false end
+            if monster.y > 20 then 
+                if not monster.demo then monster.jumping = true end 
+            else return false end
             monster.x = 127 - 8
             monster.flip = not monster.flip
         end
         if monster.x < 1 then
-            if monster.y > 20 then monster.jumping = true else return false end
+            if monster.y > 20 then 
+                if not monster.demo then monster.jumping = true end 
+            else return false end
             monster.x = 1
             monster.flip = not monster.flip
         end
@@ -72,10 +76,11 @@ function _monster_draw(monster)
     spr(monster.frame, monster.x, monster.y, 1, 1, monster.flip)
 end
 
-function make_monster()
+function make_monster(demo)
     sfx(1)
     local monster = {}
 
+    monster.demo = demo
     monster.x = flr(rnd(127 -8)) + 1
     monster.summoning = true
     monster.frame = MONSTER_FRAME_1
@@ -97,7 +102,7 @@ function make_monster()
 end
 
 function _update_monster_mgr(mm)
-    if mm.scene.player and t() > mm.spawn_after_t and #mm.monsters < MONSTER_MAX_MONSTERS then
+    if not mm.demo and mm.scene.player and t() > mm.spawn_after_t and #mm.monsters < MONSTER_MAX_MONSTERS then
         local delay = MONSTER_MIN_SUMMON_CD 
             + ((MONSTER_MAX_SUMMON_CD - MONSTER_MIN_SUMMON_CD) * (max(1 - (mm.scene.score/MONSTER_MAX_SUMMON_CD_SCORE), 0)))
         mm.spawn_after_t = t() + delay
@@ -125,9 +130,10 @@ function _kill_monster_mgr(mm, monster)
     del(mm.monsters, monster)
 end
 
-function make_monster_mgr(scene)
+function make_monster_mgr(scene, demo)
     local monster_mgr = {}
 
+    monster_mgr.demo = demo
     monster_mgr.monsters = {}
     monster_mgr.spawn_after_t = t()
 

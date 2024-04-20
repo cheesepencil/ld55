@@ -23,10 +23,10 @@ function _player_draw(player)
         spr(player.frame, player.x + x, player.y + y, 1, 1, player.flip)
     end
     pal()
-    spr(player.frame, player.x, PLAYER_HEIGHT, 1, 1, player.flip)
+    spr(player.frame, player.x, player.player_height, 1, 1, player.flip)
 end
 
-function _player_update(player)
+function _player_update(player, inputs)
     local moving = false
     if inputs.left == true then
         moving = true
@@ -47,15 +47,16 @@ function _player_update(player)
     if player.x < 0 then player.x = 0 end
 end
 
-function make_player(scene)
+function make_player(scene, player_height)
     local player = {}
 
     player.scene = scene
     player.frame = 0
     player.frame_change_after = t()
     player.flip = false
+    player.player_height = player_height and player_height or PLAYER_HEIGHT
     player.x = 64 - 8
-    player.y = PLAYER_HEIGHT
+    player.y = player.player_height
 
     player.update = _player_update
     player.draw = _player_draw

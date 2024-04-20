@@ -58,7 +58,7 @@ function make_fireball_mgr(scene)
     local fireball_mgr = {}
 
     fireball_mgr.fireballs = {}
-    fireball_mgr.spawn_after_t = 0
+    fireball_mgr.spawn_after_t = t() + rnd(2)
 
     fireball_mgr.scene = scene
     fireball_mgr.update = _fireball_mgr_update
