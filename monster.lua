@@ -58,6 +58,17 @@ function _monster_draw(monster)
         ovalfill(monster.x, 123, monster.x + 8, 127, 2)
         oval(monster.x, 123, monster.x + 8, 127, 8)
     end
+
+    pal({
+        [8] = 2,
+        [10] = 2
+    })
+    for i = 1, 4 do
+        local x = i < 3 and 0 or (i % 2 == 0 and -1 or 1)
+        local y = i > 2 and 0 or (i % 2 == 0 and 1 or -1)
+        spr(monster.frame, monster.x + x, monster.y + y, 1, 1, monster.flip)
+    end
+    pal()
     spr(monster.frame, monster.x, monster.y, 1, 1, monster.flip)
 end
 
@@ -110,6 +121,7 @@ function _draw_monster_mgr(mm)
 end
 
 function _kill_monster_mgr(mm, monster)
+    sfx(4)
     del(mm.monsters, monster)
 end
 

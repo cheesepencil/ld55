@@ -9,6 +9,20 @@ function _player_kill(player)
 end
 
 function _player_draw(player)
+    local outline_color = 1
+    pal({
+        [1] = outline_color,
+        [4] = outline_color,
+        [12] = outline_color,
+        [13] = outline_color,
+        [15] = outline_color
+    })
+    for i = 1, 4 do
+        local x = i < 3 and 0 or (i % 2 == 0 and -1 or 1)
+        local y = i > 2 and 0 or (i % 2 == 0 and 1 or -1)
+        spr(player.frame, player.x + x, player.y + y, 1, 1, player.flip)
+    end
+    pal()
     spr(player.frame, player.x, PLAYER_HEIGHT, 1, 1, player.flip)
 end
 
